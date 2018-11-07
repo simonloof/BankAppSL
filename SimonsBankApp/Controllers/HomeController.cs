@@ -4,30 +4,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SimonsBankApp.Bank;
 using SimonsBankApp.Models;
 
 namespace SimonsBankApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly BankRepository _bankRepository;
+
+        public HomeController()
+        {
+            _bankRepository = new BankRepository();
+        }
         public IActionResult Index()
         {
-            return View();
+            var customers = _bankRepository.GetCustomers();
+            return View(customers);
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
+        
 
         public IActionResult Privacy()
         {
