@@ -34,9 +34,9 @@ namespace UnitTest
 
         [Theory]
         [InlineData(1, 0, 100)]
-        [InlineData(2, -22, 200)]
+        [InlineData(2, 220, 200)]
         [InlineData(3, -3, 2000)]
-        public void Withdraw_WithInvalidArgumentsy(int accountNo, int sum, decimal expectedBalance)
+        public void Withdraw_WithInvalidArguments(int accountNo, int sum, decimal expectedBalance)
         {
             var bankRepository = GetBankRepository();
             var accountLogic = new AccountLogic(bankRepository);
