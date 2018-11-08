@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SimonsBankApp.Business;
+using SimonsBankApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +9,39 @@ namespace SimonsBankApp.Bank
 {
     public class BankRepository
     {
+        private static BankRepository instance = null;
+        private static readonly object padlock = new object();
+        private AccountLogic _accountLogic;
+
+        private List<Customer> _customers;
+        public BankRepository()
+        {
+            _customers = GetCustomers();
+            _accountLogic = new AccountLogic(this);
+        }
+
+        public static void Reset()
+        {
+            instance = null;
+        }
+        public static BankRepository Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new BankRepository();
+                    }
+                    return instance;
+                }
+            }
+        }
+        public List<Customer> Customers
+        {
+            get { return _customers; }
+        }
         public List<Customer> GetCustomers()
         {
             var customers = new List<Customer>
@@ -56,5 +91,9 @@ namespace SimonsBankApp.Bank
             };
             return customers;
         }
+
+
+        
+
     }
 }
