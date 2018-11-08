@@ -16,17 +16,32 @@ namespace SimonsBankApp.Controllers
         public AccountController()
         {
             _accountLogic = new AccountLogic(_bankRepository);
-        
+
         }
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Transfer()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Transfer(int sourceAccountNo, int targetAccountNo, int sum)
+        {
+            var viewModel = _accountLogic.Transfer(sourceAccountNo, targetAccountNo, sum);
+
+            return PartialView("_AccountDetails", viewModel);
+        }
+
+
         public IActionResult Withdrawal(int accountNo, int sum)
         {
             var viewModel = _accountLogic.WithDrawal(accountNo, sum);
-            return PartialView("_AccountDetails",viewModel);
+            return PartialView("_AccountDetails", viewModel);
         }
 
         public IActionResult Deposit(int accountNo, int sum)

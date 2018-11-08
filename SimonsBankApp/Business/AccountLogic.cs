@@ -48,6 +48,32 @@ namespace SimonsBankApp.Business
             }
             return accountViewModel;
         }
+
+        public AccountViewModel Transfer(int sourceAccountNo, int targetAccountNo, int sum)
+        {
+            var accountViewModel = new AccountViewModel();
+            var customers = _bankRepository.Customers;
+
+            var sourceAccount = customers.FirstOrDefault(c => c.Accounts.Any(a => a.AccountNo == sourceAccountNo))
+                                ?.Accounts.Single(a => a.AccountNo == sourceAccountNo);
+            var targetAccount = customers.FirstOrDefault(c => c.Accounts.Any(a => a.AccountNo == targetAccountNo))
+                                ?.Accounts.Single(a => a.AccountNo == targetAccountNo);
+
+            if (sourceAccount == null || targetAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Från-konto eller till-konto finns ej!";
+            }
+            else
+            {
+                accountViewModel.Action = AccountActionType.Transfer;
+
+            }
+
+            return accountViewModel;
+
+        }
+
         public AccountViewModel Deposit(int accountNo, int sum)
         {
             var accountViewModel = new AccountViewModel();
@@ -72,7 +98,7 @@ namespace SimonsBankApp.Business
                 {
                     accountViewModel.Message = status;
                 }
-              
+
             }
             else
             {
