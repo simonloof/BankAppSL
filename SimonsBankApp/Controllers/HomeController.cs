@@ -11,15 +11,12 @@ namespace SimonsBankApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly BankRepository _bankRepository;
+        BankRepository _bankRepository = BankRepository.Instance;
 
-        public HomeController()
-        {
-            _bankRepository = new BankRepository();
-        }
+        
         public IActionResult Index()
         {
-            var customers = _bankRepository.GetCustomers();
+            var customers = _bankRepository.Customers;
             return View(customers);
         }
 

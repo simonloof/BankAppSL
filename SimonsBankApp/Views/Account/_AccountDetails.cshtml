@@ -1,0 +1,68 @@
+﻿
+@model SimonsBankApp.ViewModels.AccountViewModel
+
+@{
+    var previousBalance = 0m;
+    string displayStyle = string.Empty;
+    string displayMark = string.Empty;
+
+    if (Model.Success)
+    {
+
+
+        switch (Model.Action)
+        {
+            case SimonsBankApp.ViewModels.AccountActionType.Withdrawal:
+                displayStyle = "color:red";
+                displayMark = "-";
+                previousBalance = Model.Account.Balance + Model.BalanceChange;
+                break;
+            case SimonsBankApp.ViewModels.AccountActionType.Transfer:
+                displayStyle = "color:red";
+                displayMark = "->";
+                break;
+            case SimonsBankApp.ViewModels.AccountActionType.Deposit:
+                displayStyle = "color:green";
+                displayMark = "+";
+                previousBalance = Model.Account.Balance - Model.BalanceChange;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+
+@if (Model.Success)
+{
+<div>
+
+    <div style="width:20%" class="form-inline">
+        <div class="form-group" >
+            <b>Kontonummer:</b> <input readonly class="form-control" value="@Model.Account.AccountNo" />
+        </div>
+        <div class="form-group">
+            <b>Tidigare saldo: </b><input style="color:gray" value="@previousBalance" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+            <b>Förändring: </b> <input style="@displayStyle" value="@displayMark @Model.BalanceChange" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <b>Saldo: </b> <input value="@Model.Account.Balance" class="form-control" readonly />
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <h2>@Model.Message</h2>
+    </div>
+
+</div>
+}
+else
+{
+    <div>
+        @Model.Message
+    </div>
+}
+
