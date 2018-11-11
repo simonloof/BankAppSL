@@ -35,29 +35,49 @@
 
 @if (Model.Success)
 {
-<div>
+    <div>
+        @if (Model.Action == SimonsBankApp.ViewModels.AccountActionType.Transfer)
+        {
+            <div style="width:20%" class="form-inline">
+                <div class="form-group">
+                    <b>Kontonummer(från):</b> <input readonly class="form-control" value="@Model.Account.AccountNo" />
+                </div>
+                <div class="form-group">
+                    <b>Saldo: </b> <input value="@Model.Account.Balance" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <b>Kontonummer(Till):</b> <input readonly class="form-control" value="@Model.TargetAccount.AccountNo" />
+                </div>
+                <div class="form-group">
+                    <b>Saldo: </b> <input value="@Model.TargetAccount.Balance" class="form-control" readonly />
+                </div>
+            </div>
+        }
+        else
+        {
 
-    <div style="width:20%" class="form-inline">
-        <div class="form-group" >
-            <b>Kontonummer:</b> <input readonly class="form-control" value="@Model.Account.AccountNo" />
-        </div>
+            <div style="width:20%" class="form-inline">
+                <div class="form-group">
+                    <b>Kontonummer:</b> <input readonly class="form-control" value="@Model.Account.AccountNo" />
+                </div>
+                <div class="form-group">
+                    <b>Tidigare saldo: </b><input style="color:gray" value="@previousBalance" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <b>Förändring: </b> <input style="@displayStyle" value="@displayMark @Model.BalanceChange" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <b>Saldo: </b> <input value="@Model.Account.Balance" class="form-control" readonly />
+                </div>
+
+            </div>
+
+        }
         <div class="form-group">
-            <b>Tidigare saldo: </b><input style="color:gray" value="@previousBalance" class="form-control" readonly>
-        </div>
-        <div class="form-group">
-            <b>Förändring: </b> <input style="@displayStyle" value="@displayMark @Model.BalanceChange" class="form-control" readonly />
-        </div>
-        <div class="form-group">
-            <b>Saldo: </b> <input value="@Model.Account.Balance" class="form-control" readonly />
+            <h2>@Model.Message</h2>
         </div>
 
     </div>
-
-    <div class="form-group">
-        <h2>@Model.Message</h2>
-    </div>
-
-</div>
 }
 else
 {

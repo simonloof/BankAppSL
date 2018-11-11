@@ -59,14 +59,37 @@ namespace SimonsBankApp.Business
             var targetAccount = customers.FirstOrDefault(c => c.Accounts.Any(a => a.AccountNo == targetAccountNo))
                                 ?.Accounts.Single(a => a.AccountNo == targetAccountNo);
 
-            if (sourceAccount == null || targetAccount == null)
+            if (sourceAccount == null && targetAccount == null)
             {
                 accountViewModel.Success = false;
-                accountViewModel.Message = "Från-konto eller till-konto finns ej!";
+                accountViewModel.Message = "Från- och tillkonto finns ej!";
+            }
+            else if (sourceAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Frånkonto finns ej!";
+            }
+            else if (targetAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Tillkonto finns ej!";
             }
             else
             {
-                accountViewModel.Action = AccountActionType.Transfer;
+                string status = targetAccount.TransferFrom(sourceAccount, sum);
+                if (status == "success")
+                {
+                    accountViewModel.Account = sourceAccount;
+                    accountViewModel.TargetAccount = targetAccount;
+                    accountViewModel.Success = true;
+                    accountViewModel.Message = "Överföring genomförd!";
+                    accountViewModel.Action = AccountActionType.Transfer;
+                }
+                else
+                {
+                    accountViewModel.Success = false;
+                    accountViewModel.Message = status;
+                }
 
             }
 
