@@ -10,6 +10,7 @@ namespace SimonsBankApp.ViewModels
     {
         public Customer Customer { get; set; }
         public Account Account { get; set; }
+        public Account TargetAccount { get; set; }
         public decimal BalanceChange { get; set; }
         public AccountActionType Action { get; set; }
         public bool Success { get; set; }

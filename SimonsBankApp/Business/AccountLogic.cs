@@ -48,6 +48,55 @@ namespace SimonsBankApp.Business
             }
             return accountViewModel;
         }
+
+        public AccountViewModel Transfer(int sourceAccountNo, int targetAccountNo, int sum)
+        {
+            var accountViewModel = new AccountViewModel();
+            var customers = _bankRepository.Customers;
+
+            var sourceAccount = customers.FirstOrDefault(c => c.Accounts.Any(a => a.AccountNo == sourceAccountNo))
+                                ?.Accounts.Single(a => a.AccountNo == sourceAccountNo);
+            var targetAccount = customers.FirstOrDefault(c => c.Accounts.Any(a => a.AccountNo == targetAccountNo))
+                                ?.Accounts.Single(a => a.AccountNo == targetAccountNo);
+
+            if (sourceAccount == null && targetAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Från- och tillkonto finns ej!";
+            }
+            else if (sourceAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Frånkonto finns ej!";
+            }
+            else if (targetAccount == null)
+            {
+                accountViewModel.Success = false;
+                accountViewModel.Message = "Tillkonto finns ej!";
+            }
+            else
+            {
+                string status = targetAccount.TransferFrom(sourceAccount, sum);
+                if (status == "success")
+                {
+                    accountViewModel.Account = sourceAccount;
+                    accountViewModel.TargetAccount = targetAccount;
+                    accountViewModel.Success = true;
+                    accountViewModel.Message = "Överföring genomförd!";
+                    accountViewModel.Action = AccountActionType.Transfer;
+                }
+                else
+                {
+                    accountViewModel.Success = false;
+                    accountViewModel.Message = status;
+                }
+
+            }
+
+            return accountViewModel;
+
+        }
+
         public AccountViewModel Deposit(int accountNo, int sum)
         {
             var accountViewModel = new AccountViewModel();
@@ -72,7 +121,7 @@ namespace SimonsBankApp.Business
                 {
                     accountViewModel.Message = status;
                 }
-              
+
             }
             else
             {

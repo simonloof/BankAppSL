@@ -43,6 +43,25 @@ namespace SimonsBankApp.Bank
             return "success";
         }
 
+        public string TransferFrom(Account sourceAccount, int sum)
+        {
+            if (sum > sourceAccount.Balance)
+            {
+                return "Det finns inte tillräckligt med tecking på frånkontot";
+            }
+            if (sum < 0)
+            {
+                return "Överföringen kan inte vara negativt";
+            }
+            if (sum == 0)
+            {
+                return "Fel format på indata";
+            }
+            sourceAccount.Balance -= sum;
+            Balance += sum;
+            return "success";
+        }
+
        
 
     }
