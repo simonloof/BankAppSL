@@ -12,6 +12,7 @@ variables:
   buildConfiguration: 'Release'
 
 
+
 steps:
 - task: NuGetToolInstaller@0
 
@@ -30,3 +31,7 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+    trigger:
+- master
+
