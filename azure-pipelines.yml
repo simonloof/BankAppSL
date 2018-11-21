@@ -11,6 +11,12 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
+  trigger:
+- development
+
+pr:
+- development
+
 steps:
 - task: NuGetToolInstaller@0
 
